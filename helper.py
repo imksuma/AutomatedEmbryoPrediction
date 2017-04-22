@@ -6,6 +6,10 @@ from scipy import ndimage as ndi
 from sklearn.decomposition import PCA
 
 import numpy as np
+'''
+@author Ilham Kusuma
+@email ilham.suk@gmail.com
+'''
 
 equalize = lambda img : exposure.equalize_adapthist(img, clip_limit=0.03)
 

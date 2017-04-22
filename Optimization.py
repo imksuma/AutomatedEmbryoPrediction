@@ -2,6 +2,10 @@ import random
 import numpy
 import math
 
+'''
+@author Ilham Kusuma
+@email ilham.suk@gmail.com
+'''
 
 class Cuckoo():
     def __init__(self, NP, N_Gen, pa, Lower, Upper, function):

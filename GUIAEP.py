@@ -4,6 +4,11 @@ from LS import *
 from skimage.io import imread
 from os.path import exists
 
+'''
+@author Ilham Kusuma
+@email ilham.suk@gmail.com
+'''
+
 class Application(tk.Frame):
 
     def __init__(self, master=None,retrain=False):

@@ -2,8 +2,9 @@ import matplotlib.pyplot as plt
 
 from sklearn.linear_model import LogisticRegressionCV
 from sklearn.ensemble import RandomForestClassifier
-from skimage.io import imread
 from sklearn.metrics import confusion_matrix
+from sklearn import tree
+from skimage.io import imread
 from helper import featureExtractionFBP, featureExtractionTP
 import numpy as np
 
@@ -11,6 +12,10 @@ from os import listdir
 import os.path
 import pickle
 from Optimization import BBatAlgorithm
+'''
+@author Ilham Kusuma
+@email ilham.suk@gmail.com
+'''
 
 class LearningSystemFBP():
 
@@ -84,11 +89,7 @@ class LearningSystemFBP():
 
     def trainTemporaryMachine(self,x,X,y,Xtest,ytest):
         selectedFeature = [idx for idx, val in enumerate(x) if val==1]
-        clf = RandomForestClassifier(warm_start=True,
-                                              max_features='sqrt',
-                                              oob_score=True,
-                                              random_state=self.RANDOM_STATE)
-        clf.set_params(n_estimators=20)
+        clf = tree.DecisionTreeClassifier()
         if np.sum(selectedFeature) == 0: return 10
 
         # self.machine.fit(X[:,selectedFeature],y)
