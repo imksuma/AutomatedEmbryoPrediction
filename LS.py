@@ -4,13 +4,15 @@ from sklearn.linear_model import LogisticRegressionCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn import tree
+
 from skimage.io import imread
-from helper import featureExtractionFBP, featureExtractionTP
 import numpy as np
 
 from os import listdir
 import os.path
 import pickle
+
+from helper import featureExtractionFBP, featureExtractionTP
 from Optimization import BBatAlgorithm
 '''
 @author Ilham Kusuma
@@ -76,8 +78,6 @@ class LearningSystemFBP():
         X=[]
         y=[]
         for dir in fullPath:
-            print(dir)
-            # tempX=[self.featureExtraction(imread(dir+"\\"+imgFname, as_grey=False)) for imgFname in listdir(dir)]
             tempX=[self.readImageAndExtractImageFeature(dir+"\\"+imgFname) for imgFname in listdir(dir)]
             tempX=[ii for ii in tempX if type(ii) != type(None)]
             X.extend(tempX)
@@ -92,7 +92,6 @@ class LearningSystemFBP():
         clf = tree.DecisionTreeClassifier()
         if np.sum(selectedFeature) == 0: return 10
 
-        # self.machine.fit(X[:,selectedFeature],y)
         clf.fit(X[:,selectedFeature], y)
 
         yPTest = clf.predict(Xtest[:,selectedFeature])
@@ -106,13 +105,6 @@ class LearningSystemFBP():
 
         acc1 = np.sum(yPTestval[yPTest==ytest])
         acc2 = np.sum(yPval[yP==y])
-        # coorectPred = np.sum(yP==y)+np.sum(yPTest==ytest)
-        # for ii in range(ytest.size):
-        #     if yPTest[ii] == ytest[ii] : coorectPred += 1
-        #
-        # for ii in range(y.size):
-        #     if yP[ii] == y[ii] : coorectPred += 1
-        # acc = coorectPred/(y.size+ytest.size)
 
         return -(acc1+acc2)
 
@@ -138,7 +130,7 @@ class LearningSystemFBP():
 
             Xtest=np.array([np.array(ii) for ii in self.Xtest])
             ytest=np.array(self.ytest)
-            self.selectedFeature = [1, 2, 3, 4, 5, 6, 8, 17, 19, 20]
+            self.selectedFeature = None
 
         if self.selectedFeature is None:
             self.selectedFeature = [idx for idx in range(X.shape[1])]
@@ -168,7 +160,7 @@ class LearningSystemFBP():
                                               random_state=self.RANDOM_STATE)
 
         tempOObError = 1
-        min_estimator = 20#self.min_estimator
+        min_estimator = 20
         tempParams = min_estimator
         max_estimator = self.max_estimator
 
@@ -176,7 +168,6 @@ class LearningSystemFBP():
             self.machine.set_params(n_estimators=i)
             self.machine.fit(X,y)
 
-            # Record the OOB error for each `n_estimators=i` setting.
             oob_error = 1 - self.machine.oob_score_
             self.oobErrorList.append((i,oob_error))
 
@@ -250,7 +241,6 @@ class LearningSystemFBP():
         if img is not None :
             feature = featureExtractionFBP(img)
         if feature is None: return None
-        # print(self.machine.predict_proba([feature[self.selectedFeature]])[0])
         return self.machine.predict_proba([feature[self.selectedFeature]])[0]
 
 class LearningSystemTP():
@@ -292,7 +282,6 @@ class LearningSystemTP():
         if fname.find("Frame") != -1 and fname.find(".png") != -1:
             img = imread(fname, as_grey=False)
             if img.shape.__len__() == 2:
-                print(fname)
                 return featureExtractionTP(img)
             else:
                 return None
@@ -507,9 +496,7 @@ class LearningSystemCRF():
         for ii in rr:
             iidx = list_of_cp[ii][iidx][0]
             pred.extend([iidx])
-        # print(pred)
         arrR = np.array(pred)
-        print(arrR[rr])
         return arrR[rr]
 
     def predictPerSequence(self, pathSequance, load=False):
@@ -523,8 +510,6 @@ class LearningSystemCRF():
             y=[]
             ff_img = None
             for dir in fullPath:
-                print(dir)
-                # tempX=[self.featureExtraction(imread(dir+"\\"+imgFname, as_grey=False)) for imgFname in listdir(dir)]
                 tempX=[self.fbp.predict_proba(dir+"\\"+imgFname) for imgFname in listdir(dir)]
                 tempX=[ii for ii in tempX if ii is not None]
                 X_fbp.extend(tempX)
@@ -542,8 +527,7 @@ class LearningSystemCRF():
             self.X_fbp = X_fbp
             self.y = y
             self.X_tp = X_tp
-            # print(X_fbp)
-            # print(pred_prob_tp)
+
             self.save()
         else:
             self.load()
@@ -556,7 +540,6 @@ class LearningSystemCRF():
         list_of_cp = None
         for idx, ii in enumerate(X_fbp):
             list_of_cp = self.makeNewPrediction(list_of_cp,ii,pred_prob_tp[idx,:])
-        # for ii in list_of_cp: print(ii)
         arrR = np.array(self.translateListOfCP(list_of_cp))+1
         return arrR
 
@@ -567,7 +550,7 @@ class LearningSystemCRF():
         print(pp)
         print(self.y.__len__())
         cnf_matrix_train = confusion_matrix(self.y, [ii.__str__() for ii in pp])
-        print(np.mean([int(ii) for ii in self.y]==pp))#[ii.__str__() for ii in pp]))
+        print(np.mean([int(ii) for ii in self.y]==pp))
         print(cnf_matrix_train)
 
 class LCRF():
@@ -613,7 +596,6 @@ class LCRF():
                 temp_oc.extend([[tidx,ts]])
             list_of_cp.extend([temp_oc])
             self.list_of_cp = list_of_cp
-            # return list_of_cp
 
     def add_new_img(self,img):
         if img.shape != (480,480):
@@ -735,14 +717,14 @@ class testLCRF():
         print(cnf_matrix_train)
 
 if __name__ == "__main__":
-    ls = LearningSystemFBP(loadDataSet=True)
+    ls = LearningSystemFBP(loadDataSet=False)
     ls.build(retrain=True)
     print(ls.selectedFeature)
-    #
-    # ls = LearningSystemTP(loadDataSet=True)
-    # ls.build(retrain=True)
-    # ls.report()
-    #
+
+    ls = LearningSystemTP(loadDataSet=False)
+    ls.build(retrain=True)
+    ls.report()
+    
     ls = LearningSystemCRF()
     ls.testPredSeq()
 

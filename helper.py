@@ -66,7 +66,6 @@ def featureExtractionFBP(img):
    hist2_img1, _ = np.histogram(reduced_data, bins=bins,
                                 density=True)
    feature.extend(hist2_img1)
-   feature.extend([np.mean(img1)])
 
    return np.array(feature)
 
