@@ -71,10 +71,11 @@ this sequance. while the process is running please do not intervene the GUI.
 
 run : GUIAEP.py
 
-refrence:
+# refrence:
 [1] A. Khan, S. Gould, and M. Salzmann,“Automated monitoring of human embryonic cells up to the 5-cell
 stage in time-lapse microscopy images,” 12th International Symposium
 on Biomedical Imaging (ISBI), pp. 389–393, 2015.
+
 [2] Mirjalili, S., Mirjalili, S. M., dan Yang, X.-S,"Binary bat algorithm," Neural
 Computing and Applications, 25(3):663–681, 2014.
 
