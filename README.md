@@ -81,70 +81,33 @@ Computing and Applications, 25(3):663–681, 2014.
 # Folder structure
 if you want to add some sequance in any folder please follow these structure.
 
-traing
-|
---sequance1
-  |
-  --class1
-    |
-	--frame1
-	|
-	--frame2
-	|
-	|
-	.
-	.
-	--framen
-  |
-  --class2
-  |
-  .
-  .
-  |
-  --class5
-|
---sequance2
-.
-.
-|
---sequance m
-
-test
-|
---sequance1
-  |
-  --class1
-    |
-	--frame1
-	|
-	--frame2
-	|
-	|
-	.
-	.
-	--framen
-  |
-  --class2
-  |
-  .
-  .
-  |
-  --class5
-|
---sequance2
-.
-.
-|
---sequance m
-
-sequance
-|
---sequance1
-  |
-  --frame1
-  |
-  --frame2
-  .
-  .
-  |
-  --framen
+	
+	- training
+		|- sequance1
+			|- class1
+				|- frame1
+				|- frame2
+				|- frame-n
+			|- class2
+			|- class3
+			|- class4
+			|- class5
+		|- sequance2
+		|- sequance-m
+	- test
+		|- sequance1
+			|- class1
+				|- frame1
+				|- frame2
+				|- frame-n
+			|- class2
+			|- class3
+			|- class4
+			|- class5
+		|- sequance2
+		|- sequance-m
+	- sequance
+		|- sequance1
+			|- frame1
+			|- frame2
+			|- frame-n
